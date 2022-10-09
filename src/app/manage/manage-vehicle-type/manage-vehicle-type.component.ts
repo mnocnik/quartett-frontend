@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+
+import {ManageVehicleTypeService} from "./manage-vehicle-type.service";
 
 @Component({
   selector: 'app-manage-vehicle-type',
@@ -9,16 +10,16 @@ import {Observable} from "rxjs";
 })
 export class ManageVehicleTypeComponent implements OnInit {
   title: string = "WORKS: ManageVehicleType";
-  graphEndpoint: string = "http://localhost:8081/quartett/graphql";
-  requestVehicle: Observable<Object> | undefined;
 
-  constructor(private http: HttpClient) {
+  constructor(private manageVehicleTypeService: ManageVehicleTypeService) {
   }
 
   postVehicleRequest() {
-    this.requestVehicle?.subscribe(
-      (data: Object) => {
-        console.log("Success", data);
+    let body = {query: "{ vehicle(uuid: \"b194aaee-089d-4bf0-9feb-311d2c0f62f8\") { uuid name description image vehicleType { name description image } data { value property {  name  unitShort  sortIndex } } }}"};
+    let observable: Observable<any> = this.manageVehicleTypeService.preparePost(body);
+    observable.subscribe(
+      (data: any) => {
+        console.log("Success", data.data);
       },
       error => {
         console.log("Error", error);
@@ -30,28 +31,9 @@ export class ManageVehicleTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let body = {query: "{ vehicle(uuid: \"b194aaee-089d-4bf0-9feb-311d2c0f62f8\") { uuid name description image vehicleType { name description image } data { value property {  name  unitShort  sortIndex } } }}"};
-    const headers = new HttpHeaders()
-      .set('content-type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-
-    this.requestVehicle = this.http.post(
-      this.graphEndpoint,
-      JSON.stringify(body),
-      {headers: headers}
-    )
-    // .subscribe(
-    //   (val) => {
-    //     console.log("POST call successful value returned in body",
-    //       val);
-    //   },
-    //   response => {
-    //     console.log("POST call in error", response);
-    //   },
-    //   () => {
-    //     console.log("The POST observable is now completed.");
-    //   })
-    ;
   }
 
+  experimental() {
+    this.manageVehicleTypeService.experimental();
+  }
 }
