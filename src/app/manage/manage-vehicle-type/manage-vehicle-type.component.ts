@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-manage-vehicle-type',
@@ -8,8 +9,24 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 })
 export class ManageVehicleTypeComponent implements OnInit {
   title: string = "WORKS: ManageVehicleType";
+  graphEndpoint: string = "http://localhost:8081/quartett/graphql";
+  requestVehicle: Observable<Object> | undefined;
 
   constructor(private http: HttpClient) {
+  }
+
+  postVehicleRequest() {
+    this.requestVehicle?.subscribe(
+      (data: Object) => {
+        console.log("Success", data);
+      },
+      error => {
+        console.log("Error", error);
+      },
+      () => {
+        console.log("Completed.");
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -18,22 +35,23 @@ export class ManageVehicleTypeComponent implements OnInit {
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
 
-    this.http.post(
-      "http://localhost:8081/quartett/graphql",
+    this.requestVehicle = this.http.post(
+      this.graphEndpoint,
       JSON.stringify(body),
       {headers: headers}
     )
-      .subscribe(
-        (val) => {
-          console.log("POST call successful value returned in body",
-            val);
-        },
-        response => {
-          console.log("POST call in error", response);
-        },
-        () => {
-          console.log("The POST observable is now completed.");
-        });
+    // .subscribe(
+    //   (val) => {
+    //     console.log("POST call successful value returned in body",
+    //       val);
+    //   },
+    //   response => {
+    //     console.log("POST call in error", response);
+    //   },
+    //   () => {
+    //     console.log("The POST observable is now completed.");
+    //   })
+    ;
   }
 
 }
