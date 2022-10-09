@@ -2,3 +2,12 @@
 
 <button (click)="postVehicleRequest()">Execute POST</button>
 <button (click)="experimental()">Experimental</button>
+
+<div *ngIf="vehicleResponse != undefined">
+  <p>Name: {{ vehicleResponse.name }}</p>
+  <p>Type: {{ vehicleResponse.vehicleType.name }}</p>
+  <p>Description: {{ vehicleResponse.description }}</p>
+  <div *ngFor="let vehicleData of vehicleResponse.data; let i = index">
+    <p>{{ vehicleData.property.name }}  : {{ vehicleData.value }} {{ vehicleData.property.unitShort }}</p>
+  </div>
+</div>
