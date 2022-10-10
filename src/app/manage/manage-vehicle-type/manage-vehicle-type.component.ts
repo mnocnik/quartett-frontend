@@ -18,7 +18,7 @@ export class ManageVehicleTypeComponent implements OnInit {
 
   postVehicleRequest() {
     let valueMap = new Map<string, string>();
-    valueMap.set("{uuid}", "b194aaee-089d-4bf0-9feb-311d2c0f62f8")
+    valueMap.set("{uuid}", "39abf90e-1860-49fc-bf12-50ce947f5249")
 
     let observable: Observable<any> = this.manageVehicleTypeService.postForVehicle(
       this.manageVehicleTypeService.buildQuery(vehicleForUUID, valueMap)
@@ -40,7 +40,7 @@ export class ManageVehicleTypeComponent implements OnInit {
 
   postVehicleAllRequest() {
     let valueMap = new Map<string, string>();
-    valueMap.set("{typeUUID}", "87a6da7a-eec6-4bdb-8c08-9453efff69c8")
+    valueMap.set("{typeUUID}", "bd70a6cb-45d2-4419-baf9-d4b5c86bff2e")
 
     let observable: Observable<any> = this.manageVehicleTypeService.postForVehicleAll(
       this.manageVehicleTypeService.buildQuery(vehicleAll, valueMap)
