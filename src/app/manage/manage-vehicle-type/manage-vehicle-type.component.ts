@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 
 import {ManageVehicleTypeService, vehicleAll, vehicleForUUID, VehicleResponse} from "./manage-vehicle-type.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-manage-vehicle-type',
@@ -9,7 +10,6 @@ import {ManageVehicleTypeService, vehicleAll, vehicleForUUID, VehicleResponse} f
   styleUrls: ['./manage-vehicle-type.component.scss']
 })
 export class ManageVehicleTypeComponent implements OnInit {
-  title: string = "WORKS: ManageVehicleType";
   vehicleResponse: VehicleResponse | undefined;
   allVehicles: VehicleResponse[] | undefined;
 
@@ -38,9 +38,9 @@ export class ManageVehicleTypeComponent implements OnInit {
     );
   }
 
-  postVehicleAllRequest() {
+  fetchVehicleTypeShip() {
     let valueMap = new Map<string, string>();
-    valueMap.set("{typeUUID}", "bd70a6cb-45d2-4419-baf9-d4b5c86bff2e")
+    valueMap.set("{typeUUID}", environment.shipTypeUUID)
 
     let observable: Observable<any> = this.manageVehicleTypeService.postForVehicleAll(
       this.manageVehicleTypeService.buildQuery(vehicleAll, valueMap)
@@ -61,9 +61,5 @@ export class ManageVehicleTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  experimental() {
-    this.manageVehicleTypeService.experimental();
   }
 }

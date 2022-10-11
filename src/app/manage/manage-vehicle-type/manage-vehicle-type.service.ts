@@ -4,16 +4,16 @@ import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 
 export type VehicleDataResponse = {
-  created: string
   uuid: string
+  created: string
   value: string
   property: VehiclePropertyResponse
   vehicle: VehicleResponse
 }
 
 export type VehiclePropertyResponse = {
-  created: string
   uuid: string
+  created: string
   name: string
   unitShort: string
   sortIndex: number
@@ -22,8 +22,8 @@ export type VehiclePropertyResponse = {
 }
 
 export type VehicleTypeResponse = {
-  created: string;
   uuid: string;
+  created: string;
   name: string
   description: string
   image: string
@@ -32,8 +32,8 @@ export type VehicleTypeResponse = {
 }
 
 export type VehicleResponse = {
-  created: string;
   uuid: string;
+  created: string;
   name: string
   image: string
   description: string
@@ -73,16 +73,18 @@ export const vehicleAll: string = `
     description
     image
     vehicleType {
+      uuid
       name
       description
       image
     }
     data {
+      uuid
       value
       property {
         name
-        unitShort
         sortIndex
+        unitShort
       }
     }
   }
@@ -98,10 +100,6 @@ export class ManageVehicleTypeService {
     .set('Access-Control-Allow-Origin', '*');
 
   constructor(private http: HttpClient) {
-  }
-
-  experimental() {
-    console.log("experimental:", environment.graphEndpoint);
   }
 
   postForVehicle(requestBody: object): Observable<VehicleResponse> {

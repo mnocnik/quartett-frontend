@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  graphEndpoint: "http://localhost:8081/quartett/graphql"
+  graphEndpoint: "http://localhost:8081/quartett/graphql",
+  shipTypeUUID: "bd70a6cb-45d2-4419-baf9-d4b5c86bff2e"
 };
 
 /*

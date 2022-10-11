@@ -1,8 +1,5 @@
-{{ title }}
-
-<button (click)="postVehicleRequest()">Execute POST</button>
-<button (click)="postVehicleAllRequest()">ALL Vehicles</button>
-<button (click)="experimental()">Experimental</button>
+<button (click)="fetchVehicleTypeShip()">Fetch ALL Ships</button>
+<!--<button (click)="postVehicleRequest()">Execute POST</button>-->
 
 <div *ngIf="allVehicles != undefined">
   <p>Count: {{ allVehicles.length }}</p>
