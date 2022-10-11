@@ -1,0 +1,18 @@
+<button (click)="fetchVehicleTypeShip()">Fetch ALL Ships</button>
+<!--<button (click)="postVehicleRequest()">Execute POST</button>-->
+
+<div *ngIf="allVehicles != undefined">
+  <p>Count: {{ allVehicles.length }}</p>
+</div>
+
+<div *ngIf="vehicleResponse != undefined">
+  <p>Name: {{ vehicleResponse.name }}</p>
+  <p>Type: {{ vehicleResponse.vehicleType.name }}</p>
+  <p>Description: {{ vehicleResponse.description }}</p>
+  <img src="{{ vehicleResponse.image }}" alt="Picture" width="300rem" />
+
+  <div *ngFor="let vehicleData of vehicleResponse.data; let i = index">
+    <p>{{ vehicleData.property.name }}
+      : {{ vehicleData.value }} {{ vehicleData.property.unitShort }}</p>
+  </div>
+</div>

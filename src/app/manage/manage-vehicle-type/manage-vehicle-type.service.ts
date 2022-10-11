@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 
-export type VehicleDataResponse = {
+export interface VehicleDataResponse {
   uuid: string
   created: string
   value: string
@@ -11,7 +11,7 @@ export type VehicleDataResponse = {
   vehicle: VehicleResponse
 }
 
-export type VehiclePropertyResponse = {
+export interface VehiclePropertyResponse {
   uuid: string
   created: string
   name: string
@@ -21,7 +21,7 @@ export type VehiclePropertyResponse = {
   data: VehicleDataResponse[]
 }
 
-export type VehicleTypeResponse = {
+export interface VehicleTypeResponse {
   uuid: string;
   created: string;
   name: string
@@ -31,7 +31,7 @@ export type VehicleTypeResponse = {
   properties: VehiclePropertyResponse[]
 }
 
-export type VehicleResponse = {
+export interface VehicleResponse {
   uuid: string;
   created: string;
   name: string
