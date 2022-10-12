@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+
+mat-card{
+  horiz-align: center;
+  width: 25%;
+  background-color: grey;
+}
+
+.text-align-right {
+  text-align: right;
+  border-right-width: 10rem;
+}

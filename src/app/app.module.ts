@@ -14,10 +14,12 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
+import {ManageVehiclesComponent} from "./manage/manage-vehicles/manage-vehicles.component";
 
 @NgModule({
   declarations: [
     AppComponent,
+    ManageVehiclesComponent,
     ManageVehicleTypeComponent
   ],
   imports: [

@@ -1,0 +1,63 @@
+<button (click)="queryVehicleTypes()">Fetch ALL Types</button>
+<button (click)="fetchVehicleTypeShip()">Fetch ALL Ships</button>
+<button (click)="postVehicleRequest()">Execute POST</button>
+
+<!--<div *ngIf="vehicleTypes != undefined">-->
+<!--  <p>Count: {{ vehicleTypes.length }}</p>-->
+<!--</div>-->
+
+<mat-form-field appearance="standard">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="matSortChange($event)">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="description"> Description</th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef> Image</th>
+      <td mat-cell *matCellDef="let element"><img src="{{element.image}}" width="75rem" alt="N/A"></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" (click)="clickedRow(element)"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                 aria-label="Select page of users"></mat-paginator>
+</div>
+
+<div *ngIf="clickedElement != undefined">
+  <mat-card>
+    <mat-card-title>{{ clickedElement.name }}</mat-card-title>
+    <mat-card-subtitle>{{ clickedElement.description }}</mat-card-subtitle>
+    <mat-card-content><img src="{{clickedElement.image}}" width="400rem" alt="Picture"></mat-card-content>
+    <div *ngFor="let vehicleData of clickedElement.data; let i = index">
+      <mat-card-content>
+        <table>
+          <tr>
+            <td>{{vehicleData.property.name}}</td>
+            <td class="text-align-right">{{vehicleData.value}} {{vehicleData.property.unitShort}}</td>
+          </tr>
+        </table>
+      </mat-card-content>
+    </div>
+    <mat-card-actions>
+      <button mat-raised-button color="accent">LIKE</button>
+    </mat-card-actions>
+  </mat-card>
+
+</div>
