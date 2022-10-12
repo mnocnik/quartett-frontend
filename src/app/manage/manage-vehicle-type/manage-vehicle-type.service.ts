@@ -50,6 +50,9 @@ export const vehicleTypes: string = `
     image
   }
 }`;
+export const createVehicleType: string = `mutation {createVehicleType(input: { name: \"{name}\", description: \"{description}\", image: \"{image}\"}) {uuid name description image}}`;
+export const removeVehicleType: string = `mutation {removeVehicleType(typeUUID: \"{typeUUID}\")}`;
+
 export const vehicleForUUID: string = `
 {
   vehicle(uuid: "{uuid}") {
@@ -119,8 +122,17 @@ export class ManageVehicleTypeService {
     )
   }
 
-  postForVehicleAll(requestBody: object): Observable<VehicleResponse[]> {
-    console.log(requestBody);
+  createVehicleType(requestBody: object): Observable<VehicleResponse[]> {
+    console.log("createVehicleType: " + requestBody);
+    return this.http.post<VehicleResponse[]>(
+      environment.graphEndpoint,
+      JSON.stringify(requestBody),
+      {headers: this.headers}
+    )
+  }
+
+  removeVehicleType(requestBody: object): Observable<VehicleResponse[]> {
+    console.log("removeVehicleType: " + requestBody);
     return this.http.post<VehicleResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),
@@ -129,7 +141,7 @@ export class ManageVehicleTypeService {
   }
 
   queryVehicleTypes(requestBody: object): Observable<VehicleTypeResponse[]> {
-    console.log(requestBody);
+    console.log("queryVehicleTypes: " + JSON.stringify(requestBody));
     return this.http.post<VehicleTypeResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),
@@ -141,6 +153,7 @@ export class ManageVehicleTypeService {
     for (let entry of map.entries()) {
       pattern = pattern.replace(entry[0], entry[1]);
     }
+    console.log("pattern: " + pattern);
     return {query: pattern};
   }
 }

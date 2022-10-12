@@ -3,22 +3,13 @@
 <hr>
 <button class="button-add" mat-button mat-raised-button (click)="addVehicleType()">Add Type</button>
 
-<div *ngFor="let vehicleType of vehicleTypes">
-  <mat-card (click)="vehicleTypeDetail(vehicleType)">
-    <mat-card-title>{{ vehicleType.name }}</mat-card-title>
-    <mat-card-subtitle>{{ vehicleType.description }}</mat-card-subtitle>
-    <mat-card-content><img src="{{ vehicleType.image }}" width="75rem" alt="N/A"></mat-card-content>
+<div *ngFor="let current of vehicleTypes">
+  <mat-card (click)="vehicleTypeDetail(current)">
+    <mat-card-title>{{ current.name }}</mat-card-title>
+    <mat-card-subtitle>{{ current.description }}</mat-card-subtitle>
+    <mat-card-content><img src="{{ current.image }}" width="75rem" alt="N/A"></mat-card-content>
     <mat-card-actions>
-      <button class="button-remove" mat-button mat-raised-button (click)="removeVehicleType(vehicleType)">Remove Type</button>
+      <button class="button-remove" mat-button mat-raised-button (click)="removeVehicleType(current)">Remove Type</button>
     </mat-card-actions>
   </mat-card>
-</div>
-
-<div *ngIf="create">
-  <mat-dialog-content>This will delete all elements that are currently on this page and cannot be undone.</mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
-    <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-    <button mat-button [mat-dialog-close]="true">Delete</button>
-  </mat-dialog-actions>
 </div>

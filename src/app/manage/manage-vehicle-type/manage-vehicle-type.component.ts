@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 
-import {ManageVehicleTypeService, VehicleTypeResponse, vehicleTypes} from "./manage-vehicle-type.service";
+import {createVehicleType, ManageVehicleTypeService, removeVehicleType, VehicleTypeResponse, vehicleTypes} from "./manage-vehicle-type.service";
 import {MatTableDataSource} from "@angular/material/table";
+import {EditVehicleTypeComponent} from "./edit-vehicle-type/edit-vehicle-type.component";
 
 @Component({
   selector: 'app-manage-vehicle-type',
@@ -12,10 +13,9 @@ import {MatTableDataSource} from "@angular/material/table";
 export class ManageVehicleTypeComponent implements OnInit {
   dataSource: MatTableDataSource<VehicleTypeResponse>;
   vehicleTypes: VehicleTypeResponse[] = [];
-  selectedVehicleType: VehicleTypeResponse | undefined;
-  create: boolean = false;
+  current: VehicleTypeResponse | null = null;
 
-  constructor(private manageVehicleTypeService: ManageVehicleTypeService) {
+  constructor(private manageVehicleTypeService: ManageVehicleTypeService, private editDialog: EditVehicleTypeComponent) {
     this.dataSource = new MatTableDataSource(this.vehicleTypes.slice());
   }
 
@@ -50,19 +50,25 @@ export class ManageVehicleTypeComponent implements OnInit {
     );
   }
 
-  clickedRow(element: VehicleTypeResponse) {
-    this.selectedVehicleType = element;
-  }
-
   vehicleTypeDetail(vehicleType: VehicleTypeResponse) {
-    console.log(vehicleType);
+    this.current = vehicleType;
+    console.log("vehicleTypeDetail" + JSON.stringify(this.current));
   }
 
   addVehicleType() {
-    this.create = true;
+    this.editDialog.openDialog();
   }
 
   removeVehicleType(vehicleType: VehicleTypeResponse) {
-
+    this.current = null;
+    console.log("removeVehicleType: " + vehicleType.uuid);
+    let valueMap = new Map<string, string>();
+    valueMap.set("{typeUUID}", vehicleType.uuid);
+    let observable: Observable<any> = this.manageVehicleTypeService.removeVehicleType(
+      this.manageVehicleTypeService.buildQuery(removeVehicleType, valueMap)
+    );
+    observable.subscribe(
+      response => console.log("remove-response" + response)
+    );
   }
 }

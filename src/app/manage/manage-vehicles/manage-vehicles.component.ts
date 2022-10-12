@@ -75,7 +75,7 @@ export class ManageVehiclesComponent implements AfterViewInit {
 
   postVehicleRequest() {
     let valueMap = new Map<string, string>();
-    valueMap.set("{uuid}", "39abf90e-1860-49fc-bf12-50ce947f5249")
+    valueMap.set("{uuid}", "39abf90e-1860-49fc-bf12-50ce947f5249");
 
     let observable: Observable<any> = this.manageVehicleTypeService.postForVehicle(
       this.manageVehicleTypeService.buildQuery(vehicleForUUID, valueMap)
