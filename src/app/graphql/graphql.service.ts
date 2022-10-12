@@ -23,12 +23,12 @@ export interface VehiclePropertyResponse {
 
 export interface VehicleTypeResponse {
   uuid: string;
-  created: string;
+  created?: string;
   name: string
   description: string
   image: string
-  vehicles: VehicleResponse[]
-  properties: VehiclePropertyResponse[]
+  vehicles?: VehicleResponse[]
+  properties?: VehiclePropertyResponse[]
 }
 
 export interface VehicleResponse {
@@ -44,15 +44,7 @@ export interface VehicleResponse {
 export const createVehicleType: string = `mutation {createVehicleType(input: { name: \"{name}\", description: \"{description}\", image: \"{image}\"}) {uuid name description image}}`;
 export const removeVehicleType: string = `mutation {removeVehicleType(typeUUID: \"{typeUUID}\")}`;
 
-export const vehicleTypes: string = `
-{
-  vehicleTypes {
-    uuid
-    name
-    description
-    image
-  }
-}`;
+export const vehicleTypes: string = "{ vehicleTypes { uuid name description image } }";
 export const vehicleForUUID: string = `
 {
   vehicle(uuid: "{uuid}") {
@@ -115,7 +107,6 @@ export class GraphqlService {
   }
 
   createVehicleType(requestBody: object): Observable<VehicleResponse[]> {
-    console.log("createVehicleType: " + requestBody);
     return this.http.post<VehicleResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),
@@ -124,7 +115,6 @@ export class GraphqlService {
   }
 
   removeVehicleType(requestBody: object): Observable<VehicleResponse[]> {
-    console.log("removeVehicleType: " + requestBody);
     return this.http.post<VehicleResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),
@@ -141,7 +131,6 @@ export class GraphqlService {
   }
 
   postForVehicleAll(requestBody: object): Observable<VehicleResponse[]> {
-    console.log(requestBody);
     return this.http.post<VehicleResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),
@@ -152,7 +141,6 @@ export class GraphqlService {
 
 
   queryVehicleTypes(requestBody: object): Observable<VehicleTypeResponse[]> {
-    console.log("queryVehicleTypes: " + JSON.stringify(requestBody));
     return this.http.post<VehicleTypeResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),

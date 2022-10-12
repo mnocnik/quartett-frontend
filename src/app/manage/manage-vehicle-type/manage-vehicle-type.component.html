@@ -7,7 +7,9 @@
   <mat-card (click)="vehicleTypeDetail(current)">
     <mat-card-title>{{ current.name }}</mat-card-title>
     <mat-card-subtitle>{{ current.description }}</mat-card-subtitle>
-    <mat-card-content><img src="{{ current.image }}" width="75rem" alt="N/A"></mat-card-content>
+    <div *ngIf="current.image">
+      <mat-card-content *ngIf="current.image && current.image !== undefined"><img src="{{ current.image }}" width="75rem" alt="N/A"></mat-card-content>
+    </div>
     <mat-card-actions>
       <button class="button-remove" mat-button mat-raised-button (click)="removeVehicleType(current)">Remove Type</button>
     </mat-card-actions>

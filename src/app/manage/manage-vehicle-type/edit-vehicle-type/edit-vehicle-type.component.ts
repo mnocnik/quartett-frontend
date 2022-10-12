@@ -16,25 +16,25 @@ export class EditVehicleTypeComponent {
   constructor(private dialog: MatDialog, private graphqlService: GraphqlService, private storeService: LocalStoreService) {
   }
 
-  openDialog(): void {
+  openDialog() {
     const dialogRef = this.dialog.open(VehicleTypeEditComponent, {data: {data: this.data}});
 
     dialogRef.afterClosed().subscribe(result => {
       let response = result as VehicleTypeResponse;
-      this.data = {name: response.name, description: response.description, image: response.image, uuid: response.uuid, created: '', vehicles: [], properties: []};
+      this.data = {uuid: response.uuid, name: response.name, description: response.description, image: response.image};
 
       let valueMap = new Map<string, string>();
       valueMap.set("{name}", this.data.name);
-      valueMap.set("{description}", this.data.description);
-      valueMap.set("{image}", this.data.image);
+      valueMap.set("{description}", this.data.description === undefined ? '' : this.data.description);
+      valueMap.set("{image}", this.data.image === undefined ? '' : this.data.image);
       let observable: Observable<any> = this.graphqlService.createVehicleType(
         this.graphqlService.buildQuery(createVehicleType, valueMap)
       );
 
       observable.subscribe(
-        (response) => {
-          console.log("Response", response);
-          let newType = response.data.vehicleTypes as VehicleTypeResponse;
+        (next) => {
+          this.storeService.notify('ManageVehicleTypeComponent');
+          let newType = next.data.vehicleTypes as VehicleTypeResponse;
           if (newType) {
             let stored: any | null = this.storeService.loadObject("vehicleTypes");
             if (stored) {
@@ -42,16 +42,8 @@ export class EditVehicleTypeComponent {
               this.storeService.storeObject("vehicleTypes", storedArray.push(newType));
             }
           }
-          console.log("Success");
-        },
-        error => {
-          console.log("Error", error);
-        },
-        () => {
-          console.log("Completed.");
         }
       );
-
     });
   }
 }

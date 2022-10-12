@@ -18,6 +18,13 @@ export class ManageVehicleTypeComponent implements OnInit {
 
   constructor(private editDialog: EditVehicleTypeComponent, private graphqlService: GraphqlService, private storeService: LocalStoreService) {
     this.dataSource = new MatTableDataSource(this.vehicleTypes.slice());
+    this.storeService.listen().subscribe(
+      (event: any) => {
+        if (event === 'ManageVehicleTypeComponent') {
+          this.queryVehicleTypes();
+        }
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -30,26 +37,15 @@ export class ManageVehicleTypeComponent implements OnInit {
       this.graphqlService.buildQuery(vehicleTypes, new Map)
     );
 
-    observable.subscribe(
-      (response) => {
-        console.log("Response", response);
-        this.vehicleTypes = response.data.vehicleTypes as VehicleTypeResponse[];
-        this.storeService.storeObject("vehicleTypes", this.vehicleTypes);
-        this.dataSource.data = this.vehicleTypes.slice();
-        console.log("Success", this.vehicleTypes);
-      },
-      error => {
-        console.log("Error", error);
-      },
-      () => {
-        console.log("Completed.");
-      }
-    );
+    observable.subscribe(next => {
+      this.vehicleTypes = next.data.vehicleTypes as VehicleTypeResponse[];
+      this.storeService.storeObject("vehicleTypes", this.vehicleTypes);
+      this.dataSource.data = this.vehicleTypes.slice();
+    });
   }
 
   vehicleTypeDetail(vehicleType: VehicleTypeResponse) {
     this.current = vehicleType;
-    console.log("vehicleTypeDetail" + JSON.stringify(this.current));
   }
 
   addVehicleType() {
@@ -58,14 +54,13 @@ export class ManageVehicleTypeComponent implements OnInit {
 
   removeVehicleType(vehicleType: VehicleTypeResponse) {
     this.current = null;
-    console.log("removeVehicleType: " + vehicleType.uuid);
     let valueMap = new Map<string, string>();
     valueMap.set("{typeUUID}", vehicleType.uuid);
     let observable: Observable<any> = this.graphqlService.removeVehicleType(
       this.graphqlService.buildQuery(removeVehicleType, valueMap)
     );
     observable.subscribe(
-      () => this.queryVehicleTypes()
+      () => this.storeService.notify('ManageVehicleTypeComponent')
     );
   }
 }

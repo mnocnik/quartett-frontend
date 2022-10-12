@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,17 @@ export class LocalStoreService {
   }
 
 
-  storeObject(key: string, value: any) {
+  storeObject(key: string, value: any): any {
     localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  private _listener = new Subject();
+
+  listen() {
+    return this._listener.asObservable();
+  }
+
+  notify(notification: string) {
+    this._listener.next(notification);
   }
 }
