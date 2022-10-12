@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {Observable} from "rxjs";
 
-import {ManageVehiclesService, vehicleAll, vehicleForUUID, VehicleResponse, VehicleTypeResponse} from "./manage-vehicles.service";
+import {GraphqlService, vehicleAll, vehicleForUUID, VehicleResponse, VehicleTypeResponse} from "../../graphql/graphql.service";
 import {environment} from "../../../environments/environment";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, Sort} from "@angular/material/sort";
@@ -24,7 +24,7 @@ export class ManageVehiclesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
-  constructor(private manageVehicleTypeService: ManageVehiclesService) {
+  constructor(private graphqlService: GraphqlService) {
     this.dataSource = new MatTableDataSource(this.vehicles.slice());
     this.dataSourceTypes = new MatTableDataSource(this.vehicleTypes.slice());
   }
@@ -77,8 +77,8 @@ export class ManageVehiclesComponent implements AfterViewInit {
     let valueMap = new Map<string, string>();
     valueMap.set("{uuid}", "39abf90e-1860-49fc-bf12-50ce947f5249");
 
-    let observable: Observable<any> = this.manageVehicleTypeService.postForVehicle(
-      this.manageVehicleTypeService.buildQuery(vehicleForUUID, valueMap)
+    let observable: Observable<any> = this.graphqlService.postForVehicle(
+      this.graphqlService.buildQuery(vehicleForUUID, valueMap)
     );
 
     observable.subscribe(
@@ -99,8 +99,8 @@ export class ManageVehiclesComponent implements AfterViewInit {
     let valueMap = new Map<string, string>();
     valueMap.set("{typeUUID}", environment.shipTypeUUID)
 
-    let observable: Observable<any> = this.manageVehicleTypeService.postForVehicleAll(
-      this.manageVehicleTypeService.buildQuery(vehicleAll, valueMap)
+    let observable: Observable<any> = this.graphqlService.postForVehicleAll(
+      this.graphqlService.buildQuery(vehicleAll, valueMap)
     );
 
     observable.subscribe(
@@ -119,8 +119,8 @@ export class ManageVehiclesComponent implements AfterViewInit {
   }
 
   queryVehicleTypes() {
-    let observable: Observable<any> = this.manageVehicleTypeService.postForVehicleAll(
-      this.manageVehicleTypeService.buildQuery(vehicleAll, new Map)
+    let observable: Observable<any> = this.graphqlService.postForVehicleAll(
+      this.graphqlService.buildQuery(vehicleAll, new Map)
     );
 
     observable.subscribe(

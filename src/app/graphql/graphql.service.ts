@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
+import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 
 export interface VehicleDataResponse {
@@ -40,6 +40,9 @@ export interface VehicleResponse {
   vehicleType: VehicleTypeResponse
   data: VehicleDataResponse[]
 }
+
+export const createVehicleType: string = `mutation {createVehicleType(input: { name: \"{name}\", description: \"{description}\", image: \"{image}\"}) {uuid name description image}}`;
+export const removeVehicleType: string = `mutation {removeVehicleType(typeUUID: \"{typeUUID}\")}`;
 
 export const vehicleTypes: string = `
 {
@@ -103,12 +106,30 @@ export const vehicleAll: string = `
 @Injectable({
   providedIn: 'root'
 })
-export class ManageVehiclesService {
+export class GraphqlService {
   headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('Access-Control-Allow-Origin', '*');
 
   constructor(private http: HttpClient) {
+  }
+
+  createVehicleType(requestBody: object): Observable<VehicleResponse[]> {
+    console.log("createVehicleType: " + requestBody);
+    return this.http.post<VehicleResponse[]>(
+      environment.graphEndpoint,
+      JSON.stringify(requestBody),
+      {headers: this.headers}
+    )
+  }
+
+  removeVehicleType(requestBody: object): Observable<VehicleResponse[]> {
+    console.log("removeVehicleType: " + requestBody);
+    return this.http.post<VehicleResponse[]>(
+      environment.graphEndpoint,
+      JSON.stringify(requestBody),
+      {headers: this.headers}
+    )
   }
 
   postForVehicle(requestBody: object): Observable<VehicleResponse> {
@@ -128,8 +149,10 @@ export class ManageVehiclesService {
     )
   }
 
+
+
   queryVehicleTypes(requestBody: object): Observable<VehicleTypeResponse[]> {
-    console.log(requestBody);
+    console.log("queryVehicleTypes: " + JSON.stringify(requestBody));
     return this.http.post<VehicleTypeResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),

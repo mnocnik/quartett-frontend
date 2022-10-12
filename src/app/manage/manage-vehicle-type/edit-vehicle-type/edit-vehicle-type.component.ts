@@ -1,24 +1,23 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {createVehicleType, ManageVehicleTypeService, VehicleTypeResponse, vehicleTypes} from "../manage-vehicle-type.service";
 import {Observable} from "rxjs";
+
+import {createVehicleType, GraphqlService, VehicleTypeResponse, vehicleTypes} from "../../../graphql/graphql.service";
+import {LocalStoreService} from "../../../graphql/local-store.service";
 
 @Component({
   selector: 'app-edit-vehicle-type',
-  templateUrl: './edit-vehicle-type.component.html',
+  templateUrl: '../../../graphql/empty.html',
   styleUrls: ['./edit-vehicle-type.component.scss']
 })
 export class EditVehicleTypeComponent {
   data: VehicleTypeResponse | null = null;
 
-  constructor(private dialog: MatDialog, private manageVehicleTypeService: ManageVehicleTypeService) {
+  constructor(private dialog: MatDialog, private graphqlService: GraphqlService, private storeService: LocalStoreService) {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(VehicleTypeEditComponent, {
-      width: '250px',
-      data: {data: this.data},
-    });
+    const dialogRef = this.dialog.open(VehicleTypeEditComponent, {data: {data: this.data}});
 
     dialogRef.afterClosed().subscribe(result => {
       let response = result as VehicleTypeResponse;
@@ -28,8 +27,8 @@ export class EditVehicleTypeComponent {
       valueMap.set("{name}", this.data.name);
       valueMap.set("{description}", this.data.description);
       valueMap.set("{image}", this.data.image);
-      let observable: Observable<any> = this.manageVehicleTypeService.createVehicleType(
-        this.manageVehicleTypeService.buildQuery(createVehicleType, valueMap)
+      let observable: Observable<any> = this.graphqlService.createVehicleType(
+        this.graphqlService.buildQuery(createVehicleType, valueMap)
       );
 
       observable.subscribe(
@@ -37,12 +36,10 @@ export class EditVehicleTypeComponent {
           console.log("Response", response);
           let newType = response.data.vehicleTypes as VehicleTypeResponse;
           if (newType) {
-            let stored: string | null = localStorage.getItem("vehicleTypes");
+            let stored: any | null = this.storeService.loadObject("vehicleTypes");
             if (stored) {
-              let storedObjects: any = JSON.parse(stored);
-              let storedArray: VehicleTypeResponse[] = <VehicleTypeResponse[]>storedObjects;
-              storedArray.push(newType);
-              localStorage.setItem("vehicleTypes", JSON.stringify(storedArray));
+              let storedArray: VehicleTypeResponse[] = <VehicleTypeResponse[]>stored;
+              this.storeService.storeObject("vehicleTypes", storedArray.push(newType));
             }
           }
           console.log("Success");
@@ -60,8 +57,8 @@ export class EditVehicleTypeComponent {
 }
 
 @Component({
-  selector: 'vehicle-type-detail-dialog',
-  templateUrl: 'vehicle-type-detail.component.html',
+  selector: 'empty',
+  templateUrl: 'edit-vehicle-type.component.html',
 })
 export class VehicleTypeEditComponent {
   constructor(
