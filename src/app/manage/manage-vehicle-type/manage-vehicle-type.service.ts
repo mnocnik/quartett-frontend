@@ -41,6 +41,15 @@ export interface VehicleResponse {
   data: VehicleDataResponse[]
 }
 
+export const vehicleTypes: string = `
+{
+  vehicleTypes {
+    uuid
+    name
+    description
+    image
+  }
+}`;
 export const vehicleForUUID: string = `
 {
   vehicle(uuid: "{uuid}") {
@@ -113,6 +122,15 @@ export class ManageVehicleTypeService {
   postForVehicleAll(requestBody: object): Observable<VehicleResponse[]> {
     console.log(requestBody);
     return this.http.post<VehicleResponse[]>(
+      environment.graphEndpoint,
+      JSON.stringify(requestBody),
+      {headers: this.headers}
+    )
+  }
+
+  queryVehicleTypes(requestBody: object): Observable<VehicleTypeResponse[]> {
+    console.log(requestBody);
+    return this.http.post<VehicleTypeResponse[]>(
       environment.graphEndpoint,
       JSON.stringify(requestBody),
       {headers: this.headers}

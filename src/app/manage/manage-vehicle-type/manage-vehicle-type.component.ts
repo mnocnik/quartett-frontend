@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {Observable} from "rxjs";
 
-import {ManageVehicleTypeService, vehicleAll, vehicleForUUID, VehicleResponse} from "./manage-vehicle-type.service";
+import {ManageVehicleTypeService, vehicleAll, vehicleForUUID, VehicleResponse, VehicleTypeResponse} from "./manage-vehicle-type.service";
 import {environment} from "../../../environments/environment";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, Sort} from "@angular/material/sort";
@@ -14,7 +14,9 @@ import {MatPaginator} from "@angular/material/paginator";
 })
 export class ManageVehicleTypeComponent implements AfterViewInit {
   vehicleResponse: VehicleResponse | undefined;
-  vehicleTypes: VehicleResponse[] = [];
+  vehicles: VehicleResponse[] = [];
+  vehicleTypes: VehicleTypeResponse[] = [];
+  dataSourceTypes: MatTableDataSource<VehicleTypeResponse>;
   dataSource: MatTableDataSource<VehicleResponse>;
 
   displayedColumns: string[] = ['name', 'description', 'image'];
@@ -23,7 +25,8 @@ export class ManageVehicleTypeComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor(private manageVehicleTypeService: ManageVehicleTypeService) {
-    this.dataSource = new MatTableDataSource(this.vehicleTypes.slice());
+    this.dataSource = new MatTableDataSource(this.vehicles.slice());
+    this.dataSourceTypes = new MatTableDataSource(this.vehicleTypes.slice());
   }
 
   applyFilter(event: Event) {
@@ -36,7 +39,7 @@ export class ManageVehicleTypeComponent implements AfterViewInit {
   }
 
   matSortChange(sortState: Sort) {
-    const data = this.vehicleTypes.slice();
+    const data = this.vehicles.slice();
     if (!sortState.active || sortState.direction === '') {
       this.dataSource.data = data;
       return;
@@ -102,8 +105,28 @@ export class ManageVehicleTypeComponent implements AfterViewInit {
 
     observable.subscribe(
       (response) => {
-        this.vehicleTypes = response.data.vehiclesByType as VehicleResponse[];
-        this.dataSource.data = this.vehicleTypes.slice();
+        this.vehicles = response.data.vehiclesByType as VehicleResponse[];
+        this.dataSource.data = this.vehicles.slice();
+        console.log("Success", this.vehicles);
+      },
+      error => {
+        console.log("Error", error);
+      },
+      () => {
+        console.log("Completed.");
+      }
+    );
+  }
+
+  queryVehicleTypes() {
+    let observable: Observable<any> = this.manageVehicleTypeService.postForVehicleAll(
+      this.manageVehicleTypeService.buildQuery(vehicleAll, new Map)
+    );
+
+    observable.subscribe(
+      (response) => {
+        this.vehicleTypes = response.data.vehiclesByType as VehicleTypeResponse[];
+        this.dataSourceTypes.data = this.vehicleTypes.slice();
         console.log("Success", this.vehicleTypes);
       },
       error => {
