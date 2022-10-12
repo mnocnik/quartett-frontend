@@ -4,7 +4,7 @@
 <button class="button-add" mat-button mat-raised-button (click)="addVehicleType()">Add Type</button>
 
 <div *ngFor="let current of vehicleTypes">
-  <mat-card (click)="vehicleTypeDetail(current)">
+  <mat-card (click)="vehicleTypeDetail(current)" class="mat-elevation-z4">
     <mat-card-title-group>
       <mat-card-title>{{ current.name }}</mat-card-title>
       <mat-card-subtitle>{{ current.description }}</mat-card-subtitle>
