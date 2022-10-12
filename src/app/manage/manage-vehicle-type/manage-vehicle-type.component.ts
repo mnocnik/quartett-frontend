@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 
-import {EditVehicleTypeComponent} from "./edit-vehicle-type/edit-vehicle-type.component";
+import {EditVehicleTypeComponent} from "./edit/edit-vehicle-type.component";
 import {GraphqlService, removeVehicleType, VehicleTypeResponse, vehicleTypes} from "../../graphql/graphql.service";
 import {LocalStoreService} from "../../graphql/local-store.service";
 

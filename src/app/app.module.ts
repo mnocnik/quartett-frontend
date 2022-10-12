@@ -16,7 +16,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
 import {ManageVehiclesComponent} from "./manage/manage-vehicles/manage-vehicles.component";
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
-import {EditVehicleTypeComponent, VehicleTypeEditComponent} from './manage/manage-vehicle-type/edit-vehicle-type/edit-vehicle-type.component';
+import {EditVehicleTypeComponent, VehicleTypeEditComponent} from './manage/manage-vehicle-type/edit/edit-vehicle-type.component';
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
