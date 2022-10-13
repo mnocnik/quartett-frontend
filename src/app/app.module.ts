@@ -19,6 +19,9 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dia
 import {EditVehicleTypeComponent, VehicleTypeEditComponent} from './manage/manage-vehicle-type/edit/edit-vehicle-type.component';
 import {FormsModule} from "@angular/forms";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { NavbarComponent } from './navbar/navbar/navbar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
     ManageVehiclesComponent,
     ManageVehicleTypeComponent,
     EditVehicleTypeComponent,
-    VehicleTypeEditComponent
+    VehicleTypeEditComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,9 @@ import {MatGridListModule} from "@angular/material/grid-list";
     MatDividerModule,
     MatDialogModule,
     FormsModule,
-    MatGridListModule
+    MatGridListModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   providers: [
     EditVehicleTypeComponent,
